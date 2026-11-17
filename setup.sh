@@ -11,7 +11,11 @@ M=android/app/src/main/AndroidManifest.xml
 for P in ACCESS_COARSE_LOCATION ACCESS_FINE_LOCATION FOREGROUND_SERVICE FOREGROUND_SERVICE_LOCATION POST_NOTIFICATIONS WAKE_LOCK; do
   grep -q "android.permission.$P" "$M" || sed -i.bak "s#</manifest>#    <uses-permission android:name=\"android.permission.$P\" />\n</manifest>#" "$M"
 done
+grep -q "REQUEST_INSTALL_PACKAGES" "$M" || sed -i.bak "s#</manifest>#    <uses-permission android:name=\"android.permission.REQUEST_INSTALL_PACKAGES\" />\n</manifest>#" "$M"
 rm -f "$M.bak"
+# App 内更新插件（检查新版本 → 下载 → 调起安装）
+JD=android/app/src/main/java/com/natea/rider
+cp native/android/AppUpdatePlugin.java native/android/MainActivity.java "$JD/"
 
 # ---------- iPhone（只有 Mac 才会生成）----------
 if [ "$(uname)" = "Darwin" ]; then
