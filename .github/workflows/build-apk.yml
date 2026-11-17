@@ -1,0 +1,38 @@
+name: Build Android APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - name: 生成 Android 工程并补权限
+        run: bash setup.sh
+      - name: 固定签名（这样每次出的 APK 都能直接覆盖安装旧版）
+        env:
+          KS: ${{ secrets.DEBUG_KEYSTORE_B64 }}
+        run: |
+          mkdir -p ~/.android
+          if [ -n "$KS" ]; then echo "$KS" | base64 -d > ~/.android/debug.keystore; else echo "::warning::没有设置 DEBUG_KEYSTORE_B64，将使用临时签名（每次都不同，旧版需要先卸载）"; fi
+      - name: 版本号 = 第几次构建
+        run: sed -i "s/versionCode [0-9]*/versionCode ${{ github.run_number }}/; s/versionName \"[^\"]*\"/versionName \"1.0.${{ github.run_number }}\"/" android/app/build.gradle
+      - name: 打包
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+      - name: 重命名
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk NaTea.apk
+      - name: 发布到 Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: NaTea 配送 v1.0.${{ github.run_number }}
+          files: NaTea.apk
+          make_latest: true

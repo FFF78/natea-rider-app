@@ -1,0 +1,11 @@
+{
+  "appId": "com.natea.rider",
+  "appName": "NaTea 配送",
+  "webDir": "www",
+  "server": {
+    "url": "https://mediumaquamarine-opossum-353388.hostingersite.com/rider.php",
+    "androidScheme": "https",
+    "allowNavigation": ["mediumaquamarine-opossum-353388.hostingersite.com", "*.google.com", "*.openstreetmap.org", "cdnjs.cloudflare.com"]
+  },
+  "ios": { "contentInset": "always" }
+}

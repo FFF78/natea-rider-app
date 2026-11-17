@@ -1,0 +1,19 @@
+{
+  "name": "natea-rider",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NaTea 配送员 App（Android / iPhone 外壳，装的是网站上的配送页）",
+  "scripts": {
+    "setup": "bash setup.sh",
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor-community/background-geolocation": "^1.2.0",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0"
+  }
+}
