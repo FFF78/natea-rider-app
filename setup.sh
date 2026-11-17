@@ -30,4 +30,4 @@ npx cap sync
 echo
 echo "完成。接下来："
 echo "  Android：npx cap open android   （用 Android Studio 打开，菜单 Build → Build APK）"
-[ "$(uname)" = "Darwin" ] && echo "  iPhone ：npx cap open ios       （用 Xcode 打开，设置好 Team 后 Product → Archive）"
+if [ "$(uname)" = "Darwin" ]; then echo "  iPhone ：npx cap open ios       （用 Xcode 打开，设置好 Team 后 Product → Archive）"; fi
